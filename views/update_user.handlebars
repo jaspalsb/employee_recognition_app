@@ -1,0 +1,29 @@
+<div class="container">
+	<div class="col-sm-12 col-sm-offset-4">
+		<h1>Update {{user.first_name}} {{user.last_name}}</h1>
+	</div>
+
+	<form id='update_user' action='/admin-crud-users/{{user.user_id}}' method='post'>
+
+		First Name:<br>
+		<input type='text' name='first_name' value='{{user.first_name}}'><br>
+		Last Name:<br>
+		<input type='text' name='last_name' value='{{user.last_name}}'><br>
+		Email:<br>
+		<input type='text' name='email' value='{{user.email}}'><br>
+		Password:<br>
+		<input type='password' name='password' value='{{user.password}}'><br>
+		Department:<br>
+		<select name='department_id' id='dept_selector'>
+			{{#each department}}
+			<option value='{{dept_id}}'>{{dept_name}}</option>
+			{{/each}}
+		</select><br>
+		Account Created:<br>
+		{{user.account_created}}<br>
+
+		<input type='submit' value="Update Account">
+	</form>
+
+	<script defer>selectDept({{department.dept_id}});</script>
+</div>

@@ -1,0 +1,67 @@
+
+{{> header }}
+<br><br><br><br>
+<h1 class="text-center">Award History Page </h1>
+
+
+ <form id="awardshistoryform" action="/awardHistory" method="get"> 
+ <input id="userid1" type="hidden" name="user_id" value="{{user_id}}"/>
+<table align="center" border="4" style="height: 72px;" width="728">
+  <tbody>
+    <script>
+      function deleteAward(id) {
+          var request = new XMLHttpRequest();
+          request.onreadystatechange = function(e) {
+          if (request.readyState === 4) {
+              if (request.status === 200) {
+                location.reload();
+              } else {
+                location.reload();
+              }
+            }
+          }
+          request.ontimeout = function () {
+            location.reload();
+          }
+          request.open('DELETE', '/awardHistory/' + id, true);
+          request.send();
+          setInterval('window.location.reload()', 2000);
+          
+      }
+    </script>
+    <tr>
+      
+      <td>
+        <h4>First Name</h4>
+      </td>
+      <td>
+        <h4>Last Name</h4>
+      </td>
+      <td>
+        <h4>Award Type</h4>
+      </td>
+      <td>
+        <h4>Issued date</h4>
+      </td>
+     <td>
+        <h4>Delete</h4>
+      </td>
+    </tr>
+   {{#each results}} 
+      <tr>
+        <td>{{first_name}}</td>
+        <td>{{last_name}}</td>
+        <td>{{award_type}}</td>
+        <td>{{award_created}}</td>
+      <td>
+              
+                 <input type="hidden" name="id" value="{{award_id}}" />
+                  <button type="button" onclick="deleteAward({{award_id}});">delete</button> 
+                
+              
+          </td>
+      </tr>
+       {{/each}} 
+  </tbody>
+</table>
+<p>&nbsp;</p>

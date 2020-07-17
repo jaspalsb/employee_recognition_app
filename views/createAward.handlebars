@@ -1,0 +1,144 @@
+{{> header }}
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet" />
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+
+<style>
+    body {
+        padding-top: 100px;
+    }
+</style>
+
+<style>
+  .slow .toggle-group { transition: left 0.7s; -webkit-transition: left 0.7s; }
+  .fast .toggle-group { transition: left 0.1s; -webkit-transition: left 0.1s; }
+  .quick .toggle-group { transition: none; -webkit-transition: none; }
+</style>
+
+<style>
+label {
+  cursor: default;
+}
+</style>
+
+<body>
+    <div class="container">
+
+            <div class="col-sm-2 col-sm-offset-1">
+                <div class="text-left"> Create Award </div>
+            </div>
+            <br>
+            <hr class="style1" />
+            <br>
+      
+             <form id="awardsform" action="/createAward/update" method="get"> 
+             <input id="userid1" type="hidden" name="user_id" value="{{user_id}}"/>
+
+              
+			<div class="text-left"> Select Award recepient </div>	
+     
+		   <br><br>
+	
+
+
+<!--https://stackoverflow.com/questions/36005249/adding-search-functionality-in-select-options-using-bootstrap -->
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <!-- /.box-header -->
+        <div class="box-body">
+          <form id="selectedemailform">
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <select class="form-control selectpicker" id="selecteduser" name="selecteduser" placeholder="" data-live-search="false" onchange="updateText('selecteduseremail')">
+                    <option data-hidden="true"></option>
+                    {{#each results}}
+                      <option value="{{email}}" data-userid="{{user_id}}" data-username="{{first_name}} {{last_name}}" data-tokens="{{user_id}}">{{last_name}}, {{first_name}} </option>
+                    {{/each}}
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br><br>
+
+
+<form action="/createAward" method="post">
+
+<div class="text-left">  
+  <label>Retrieved email</label>
+  <br>
+ 		<input id="selecteduserid" type="text" placeholder="Searching.." hidden=true name="selecteduserid" value=""></input>
+ 		<input id="selectedusername" type="text" placeholder="Searching.." hidden=true name="selectedusername" value=""></input>
+ 		<input id="selecteduseremail" type="text" placeholder="Searching.." name="selecteduseremail" value=""></input>
+  <br>
+</div>
+
+<br><br>
+
+<div class="text-left"> Select Award type </div>	
+<br>
+<br>
+<div class="btn-group btn-group-toggle" data-toggle="buttons" id="awardtypeslection" name="awardtypeslection">
+  <label class="btn btn-info active">
+    <input type="radio" name="awardtypeoption" id="awardtypeoption" autocomplete="off" value="Weekly"> Employee of the week
+  </label>
+  <label class="btn btn-info">
+    <input type="radio" name="awardtypeoption" id="awardtypeoption" autocomplete="off" value="Monthly"> Employee of the month
+  </label>
+</div>
+
+
+<script type="text/javascript">
+    function updateText(obj1) { 
+        var id1 = obj1;
+        document.getElementById(id1).value = document.getElementById("selecteduser").value;
+    }
+    $("#selecteduser").change(function () {
+     document.getElementById('selecteduserid').value = $(this).find(':selected').data('userid');
+     document.getElementById('selectedusername').value = $(this).find(':selected').data('username');
+    });
+</script>
+
+    <br> <br>
+ 
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="Created Date">DateTime</label>
+                        <p id="time">
+
+                        <script>
+                          document.getElementById("time").innerHTML = Date();
+                        </script>
+                        </p>
+
+                      <!--  <input type="datetime" class="form-control" id="datetime" name="account_created" placeholder="Account_created"/> -->
+                    </div>
+					</div>			
+                
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <button type="submit" class="btn btn-info">Create</button>
+                    </div>
+                </div>
+  </form>
+  </div>
+   
+     {{!-- {{/each}} --}}
+
+
+
+    <br><br>

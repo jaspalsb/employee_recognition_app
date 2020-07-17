@@ -1,0 +1,130 @@
+{{> header }}
+
+
+<style>
+    body {
+        padding-top: 100px;
+    }
+</style>
+
+<body>
+    <div class="container">
+
+        <span class="border border-dark">
+            <div class="col-sm-2 col-sm-offset-2">
+                <div class="text-left"> Account Information </div>
+            </div>
+            <br>
+            <hr class="style1">
+            <br>
+            <!-- Update User Account FORM -->
+         
+
+             {{#each results}}
+            <div id="userdata" class="panel panel-primary">
+              <form id="formuser" method = "get" action="/userprofile/update" enctype="multipart/form-data"> 
+                <div class="form-row panel-body">
+                    <!--<input type="hidden" name="user_id" value="{{user_id}}" />-->
+                    <input id="userid1" type="hidden" name="user_id" value="{{user_id}}"/>
+                    <div class="form-group col-md-8 panel-body">
+                        <label for="inputFName">First Name</label>
+                        <input type="text" class="form-control" id="inputFName" name="first_name" placeholder="First Name" value="{{first_name}}" />
+                    </div>
+                    <div class="form-group col-md-2 panel-body">
+                        <div class="element panel-body"></div>
+                        <button type="submit" class="btn btn-custom btn-lg text-white">Update</button>
+                    </div>
+                </div>
+                <div class="form-row panel-body">
+                    <div class="form-group col-md-8 panel-body">
+                        <label for="inputLName">Last Name</label>
+                        <input type="text" class="form-control" id="inputLName" name="last_name" placeholder="Last Name" value="{{last_name}}" />
+                    </div>
+                    <div class="form-group col-md-2 panel-body">
+                        <div class="element panel-body"></div>
+                        <button type="submit" class="btn btn-custom btn-lg text-white">update</button>
+                    </div>
+                </div>
+
+                <div class="form-row panel-body">
+                    <div class="form-group col-md-8 panel-body">
+                        <label for="inputEmail">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="{{email}}" />
+                    </div>
+                    <div class="form-group col-md-2 panel-body">
+                        <div class="element panel-body"></div>
+                        <button type="submit" class="btn btn-custom btn-lg text-white">update</button>
+                    </div>
+                </div>
+
+                <div class="form-row panel-body">
+                    <div class="form-group col-md-8 panel-body">
+                        <label for="inputPassword4">Password</label>
+                        <input type="password" class="form-control" id="inputPassword4" name="password" placeholder="Password" value="{{password}}" />
+                    </div>
+                    <div class="form-group col-md-2 panel-body">
+                        <div class="element panel-body"></div>
+                        <button type="submit" class="btn btn-custom btn-lg text-white">update</button>
+                    </div>
+                </div>
+
+                <div class="form-row panel-body">
+                    <div class="form-group col-md-8 panel-body">
+                        <label for="Created Date">DateTime</label>
+                        <p id="time">
+                          {{account_created}}
+                        <!--
+                        <script>
+                          document.getElementById("time").innerHTML = Date();
+                        </script>
+                        </p>
+                        -->
+                     <!--<input type="datetime" class="form-control" id="datetime" name="account_created" placeholder="Account_created" value="{{account_created}}"/>-->
+                    </div>
+                    <!--
+                    <div class="form-group col-md-2 panel-body">
+                        <div class="element panel-body"></div>
+                        <button type="submit" class="btn btn-custom btn-lg text-white">update</button>
+                    </div>
+                    -->
+                </div>
+
+              </form>
+ 
+              <div id="usersignature" class="panel panel-primary"  style="width: 800px">
+                <div class="form-row panel-body">
+                    <div class="form-group col-md-8 panel-body">
+                        <!--<textarea class="form-control rounded" id="exampleFormControlTextarea2" rows="4" placeholder="Signature"></textarea>-->
+                        <img name="signature_image_path" src="{{signature_image_path}}">
+                        <!-- <img src="signature_image_path">  -->
+                    </div>
+                </div>
+                <div class="file-field panel-body">
+                    <form id="formuserupload" method = "post" action="/userprofile/upload_file" enctype="multipart/form-data">
+                      <div class="form-group col-md-2 panel-body">
+                          <div class="btn btn-secondery btn-sm pull-left panel-body">
+                              <input type="file" name="file" multiple="multiple">
+                          </div>
+                          <button type="submit" form="formuserupload" class="btn btn-custom btn-lg text-white">upload</button>
+                      </div>
+                    </form>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="form-row panel-body">
+              <div class="form-group col-md-8 panel-body">
+                <button type="submit" form="formuser" class="btn btn-block btn-custom btn-lg text-white">Save</button>
+              </div>
+            </div>
+
+          {{/each}}
+        </span>
+    </div>
+
+
+
+    <br><br>
+    <script>console.log("{{signature_image_path}}")</script>

@@ -1,0 +1,211 @@
+{{> admin-navbar}}
+<div class="container">
+	<div class="col-sm-12 col-sm-offset-4">
+		<h1 class="text-center text-custom">ERP - Admin - Business Intelligence</h1>
+	</div>
+
+	<br />
+
+  <div class="container bg-white">
+		<div class="card-deck">
+
+			<div class="col-sm">
+				<div class="card text-white bg-info mb-3">
+					<div class="card-body">
+						<div class="container">
+							<div class="row">
+								<div class="col-5">
+									<i class="fas fa-star-half-alt fa-7x"></i>
+								</div>
+								<div class="col-7">
+									<h2 class="text-right">{{award_num.total_awards}}</h2>
+									<p class="text-right">Total Awards!</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm">
+				<div class="card text-white bg-danger mb-3">
+					<div class="card-body">
+						<div class="container">
+							<div class="row">
+								<div class="col-5">
+									<i class="fab fa-slack-hash fa-7x"></i>
+								</div>
+								<div class="col-7">
+									<h2 class="text-right">{{awardee_num.total_awardees}}</h2>
+									<p class="text-right">New awardees!</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm">
+				<div class="card text-white bg-warning mb-3">
+					<div class="card-body">
+						<div class="container">
+							<div class="row">
+								<div class="col-5">
+									<i class="fas fa-users fa-7x"></i>
+								</div>
+								<div class="col-7">
+									<h2 class="text-right">{{sitevisits.visits}}</h2>
+									<p class="text-right">Site visits!</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br />
+
+<div class="container bg-white">
+<div class="row">
+  <div class="col-8">
+    <div class="chart"></div>
+  </div>
+  <div class="col-4">
+    <h3 class="text-center text-custom">Top three employees</h3>
+    <canvas id="donut2" width="400" height="300"></canvas>
+  </div>
+</div>
+<div class="row pb-5">
+<div class="col-3 offset-1">
+  <div class="card rounded" style="width: 18rem;">
+    <i class="fas fa-user-edit fa-9x text-center text-custom"></i>
+    <div class="card-body">
+      <div class="row" style="display: block">
+        <h3 class="text-custom text-center">Export users data</h3>
+      </div>
+      <div class="row" style="display: block">
+        <a href="/admin-bus-intel/download/users" download>
+          <button type="button" class="btn btn-custom btn-lg btn-block text-white"><i class="fas fa-download"></i> Download</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-3 offset-1">
+  <div class="card rounded" style="width: 18rem;">
+    <i class="fas fa-trophy fa-9x text-center text-custom"></i>
+    <div class="card-body">
+      <div class="row" style="display: block">
+        <h3 class="text-custom text-center">Export awardees</h3>
+      </div>
+      <div class="row" style="display: block">
+        <a href="/admin-bus-intel/download/awardees" download>
+          <button type="button" class="btn btn-custom btn-lg btn-block text-white"><i class="fas fa-download"></i> Download</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-3 offset-1">
+  <div class="card rounded" style="width: 18rem;">
+    <i class="fas fa-file-csv fa-9x text-center text-custom"></i>
+    <div class="card-body">
+      <div class="row" style="display: block">
+        <h3 class="text-custom text-center">Export departments</h3>
+      </div>
+      <div class="row" style="display: block">
+        <a href="/admin-bus-intel/download/departments" download>
+          <button type="button" class="btn btn-custom btn-lg btn-block text-white"><i class="fas fa-download"></i> Download</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<script>
+	// vars to hold data from json
+	var data = [];
+	// used below link for ref setting up this horizontal bar char
+	// https://www.d3-graph-gallery.com/graph/barplot_basic.html
+	// set dims and margins for graph
+	var margin = {top: 30, right: 30, bottom: 70, left: 60}, width = 460 - margin.left - margin.right, height = 460 - margin.top - margin.bottom;
+	// append the svg object to the body of page
+	var svg = d3.select(".chart").append("svg")
+	  .attr("width", width + margin.left + margin.right)
+	  .attr("height", height + margin.top + margin.bottom)
+	.append("g")
+	  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	// get data from json
+	{{#each num_awards_dept}}
+	data.push({ dept: "{{dept_name}}", total: {{dept_total}} });
+	{{/each}}
+	// X axis
+	var x = d3.scaleBand()
+	  .range([0, width])
+	  .domain(data.map(function(d) {return d.dept; }))
+	  .padding(0.2);
+	svg.append("g")
+	  .attr("transform", "translate(0," + height + ")")
+	  .call(d3.axisBottom(x))
+	  .selectAll("text")
+	    .attr("transform", "translate(-10,0)rotate(-45)")
+	    .style("text-anchor", "end");
+	// Y axis
+	var y = d3.scaleLinear()
+	  .domain([0, 10])
+	  .range([height, 0]);
+	svg.append("g")
+	  .call(d3.axisLeft(y));
+	// Bars
+	svg.selectAll("mybar")
+	  .data(data)
+	  .enter()
+	  .append("rect")
+	    .attr("x", function(d) {return x(d.dept); })
+	    .attr("y", function(d) {return y(d.total); })
+	    .attr("width", x.bandwidth())
+	    .attr("height", function(d) {return height - y(d.total); })
+	    .attr("fill", "#69b3a2");
+
+var ctx3 = document.getElementById('donut2');
+var myChart3 = new Chart(ctx3, {
+  type: 'pie',
+  data: {
+    labels: [
+	{{#each persons}}
+	'{{first_name}} {{last_name}}',
+	{{/each}}
+	],
+    datasets: [{
+      label: '# of Tomatoes',
+      data: [{{#each persons}}
+	  {{counter}},
+	  {{/each}}],
+      backgroundColor: [
+        'rgba(246, 40, 98, 1)',
+        'rgba(113, 249, 245, 1)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+   	cutoutPercentage: 40,
+    responsive: false,
+
+  }
+});
+	</script>
+</div>

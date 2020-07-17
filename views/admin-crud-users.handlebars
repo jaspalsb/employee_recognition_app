@@ -1,0 +1,57 @@
+	{{> admin-navbar}}
+<div class="container">
+	<div class="col-sm-12 col-sm-offset-4">
+		<h1>ERP - Admin - Create/Edit/Delete Users</h1>
+	</div>
+
+	<br />
+
+	<h3>Edit/Delete Users</h3>
+	<table>
+		<thead>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Department</th>
+			<th>Username</th>
+			<th>Password</th>
+			<th>Account Created</th>
+			<tbody>
+			{{#each users}}
+			<tr>
+				<td>{{first_name}}</td>
+				<td>{{last_name}}</td>
+				<td>{{dept_name}}</td>
+				<td>{{email}}</td>
+				<td>{{password}}</td>
+				<td>{{account_created}}</td>
+				<td><button onclick='deleteUser({{user_id}})'>Delete</td>
+				<td><a href="/admin-crud-users/{{user_id}}">Update</a></td>
+			</tr>
+			{{/each}}
+		</thead>
+	</table>
+
+	<h3>Create New User Account</h3>
+
+	<form name='create_user' action='/admin-crud-users' method='post'>
+
+		First Name:<br>
+		<input type='text' name='first_name'><br>
+		Last Name:<br>
+		<input type='text' name='last_name'><br>
+
+		Email:<br>
+		<input type='text' name='email'><br>
+		Password:<br>
+		<input type='password' name='password'><br>
+
+		Department:<br>
+		<select name='department_id'>
+			{{#each department}}
+			<option value='{{dept_id}}'>{{dept_name}}</option>
+			{{/each}}
+		</select><br>
+
+		<input type='submit' value="Create Account">
+	</form>
+</div>

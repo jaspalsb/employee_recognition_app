@@ -1,0 +1,121 @@
+<link rel="stylesheet" style="text/css" href="../static/CSS/draw.css">
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                           <a class="navbar-brand text-white" href="/">ERP</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-right">
+			                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">Already a member?
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/login"><i class="fas fa-sign-in-alt"></i> Login
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container pt-4">
+<div class="row justify-content-center">
+<h1 class="text-center text-white">Hi there {{first}} {{last}}</h1>
+</div>
+</div>
+<canvas id="canvas"></canvas>
+<div class="container">
+<div class="row">
+<div class="col-sm-2 offset-sm-8">
+		<button type="button" class="btn btn-light" id="reset">Redo signature <i class="fas fa-redo-alt"></i></button>
+		</div>
+</div>
+</div>
+ <div class="container pt-5">
+ 	<div class="row justify-content-center">
+   <button type="button" class="btn btn-custom btn-lg text-white" id="submit">Finish sign up <i class="far fa-smile-beam"></i></button>
+
+	</div>
+	</div>
+	</div>
+
+<script>
+window.addEventListener('load', ()=>{
+ var canvas = document.querySelector("#canvas");
+ var context = canvas.getContext("2d");
+ context.fillStyle = 'green';
+context.fillRect(canvas.offsetLeft, canvas.offsetTop, canvas.width, canvas.height);
+ var painting = false;
+ var lastX, lastY;
+ canvas.width = 800;
+ canvas.height = 200;
+ function start(){
+ painting = true;
+ }
+ 
+ function stop(){
+ painting = false;
+ lastX = 0;
+ lastY = 0;
+ }
+ 
+ function draw(ink){
+ if (!painting){
+ return;
+ }
+ if (lastX && lastY && (ink.clientX !== lastX || ink.clientY !== lastY)) {
+        context.lineWidth = 4;
+        context.beginPath();
+        context.moveTo(lastX, lastY);
+        context.lineTo((ink.clientX - canvas.offsetLeft), (ink.clientY - canvas.offsetTop));
+        context.stroke();
+    }
+  context.beginPath();
+  context.arc((ink.clientX - canvas.offsetLeft), (ink.clientY - canvas.offsetTop), 2, 0, Math.PI*2, true);
+  context.closePath();
+  context.fill();
+  lastX = ink.clientX - canvas.offsetLeft;
+  lastY = ink.clientY - canvas.offsetTop;
+  }
+ canvas.addEventListener("mouseup", stop);
+ canvas.addEventListener("mousedown", start);
+ canvas.addEventListener("mousemove", draw);
+ document.getElementById('reset').onclick = function() {
+   context.clearRect(0, 0, canvas.width, canvas.height);
+};
+$(function() { 
+            $("#submit").click(function() { 
+                        var dataURL = canvas.toDataURL(); 		
+                        $.ajax({ 
+                            type: "POST", 
+                            url: '/signup/signature',
+                            data: { 
+                                imgBase64: dataURL,
+								email: "{{email}}"
+                            },
+							success: function(response) {
+    					if (response.result == 'redirect') {
+     					 window.location.replace(response.url);
+   						 }
+  						}
+                        }).done(function(o) { 
+                            console.log('saved'); 
+                        }); 
+            }); 
+        }); 
+//downloadLnk.addEventListener('click', download, false);
+});
+</script>
+<style type="text/css">
+ body {
+background: #642B73;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #C6426E, #642B73);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #C6426E, #642B73); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+ }
+</style>

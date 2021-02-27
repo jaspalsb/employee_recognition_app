@@ -9,7 +9,7 @@
   "author": "Jaspal",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "chart.js": "^2.9.3",
     "connect-flash": "^0.1.1",
